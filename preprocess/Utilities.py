@@ -35,8 +35,7 @@ def get_data_frame_col_names(data_frame):
         raise ValueError(form_error_msg("Invalid parameter data."))
     return data_frame.columns
 
-# def filter_col_data(data,columns):
-#     if da:
+
 
 
 

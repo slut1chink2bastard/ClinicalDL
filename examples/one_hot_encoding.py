@@ -1,8 +1,11 @@
+import sys,os
+BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(BASE,"utils"))
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 
-from utils import Utilities as Utils
+import Utilities as Utils
 from deepsurvk import deepsurvk
 df = pd.read_csv("breast.csv")
 df = Utils.filter_col_data(df,["Age recode with <1 year olds","Behavior code ICD-O-3","Breast - Adjusted AJCC 6th T (1988-2015)","Breast - Adjusted AJCC 6th N (1988-2015)","Breast - Adjusted AJCC 6th M (1988-2015)","CS tumor size (2004-2015)","CS extension (2004-2015)","CS lymph nodes (2004-2015)","CS mets at dx (2004-2015)","Histologic Type ICD-O-3","Laterality","Breast Subtype (2010+)","ER Status Recode Breast Cancer (1990+)","PR Status Recode Breast Cancer (1990+)","Derived HER2 Recode (2010+)","RX Summ--Surg Prim Site (1998+)","Radiation recode","Chemotherapy recode (yes, no/unk)","Marital status at diagnosis","End Calc Vital Status (Adjusted)","Number of Intervals (Calculated)"])

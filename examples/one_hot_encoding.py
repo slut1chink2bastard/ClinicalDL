@@ -1,35 +1,41 @@
-import sys,os
-BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(BASE,"utils"))
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 
 import Utilities as Utils
-from deepsurvk import deepsurvk
-df = pd.read_csv("breast.csv")
-df = Utils.filter_col_data(df,["Age recode with <1 year olds","Behavior code ICD-O-3","Breast - Adjusted AJCC 6th T (1988-2015)","Breast - Adjusted AJCC 6th N (1988-2015)","Breast - Adjusted AJCC 6th M (1988-2015)","CS tumor size (2004-2015)","CS extension (2004-2015)","CS lymph nodes (2004-2015)","CS mets at dx (2004-2015)","Histologic Type ICD-O-3","Laterality","Breast Subtype (2010+)","ER Status Recode Breast Cancer (1990+)","PR Status Recode Breast Cancer (1990+)","Derived HER2 Recode (2010+)","RX Summ--Surg Prim Site (1998+)","Radiation recode","Chemotherapy recode (yes, no/unk)","Marital status at diagnosis","End Calc Vital Status (Adjusted)","Number of Intervals (Calculated)"])
-df = pd.get_dummies(df, prefix=["Age recode with <1 year olds", "Behavior code ICD-O-3",
-                                          "Breast - Adjusted AJCC 6th T (1988-2015)",
-                                          "Breast - Adjusted AJCC 6th N (1988-2015)",
-                                          "Breast - Adjusted AJCC 6th M (1988-2015)", "CS extension (2004-2015)",
-                                          "CS lymph nodes (2004-2015)", "CS mets at dx (2004-2015)",
-                                          "Histologic Type ICD-O-3", "Laterality", "Breast Subtype (2010+)",
-                                          "ER Status Recode Breast Cancer (1990+)",
-                                          "PR Status Recode Breast Cancer (1990+)", "Derived HER2 Recode (2010+)",
-                                          "RX Summ--Surg Prim Site (1998+)", "Radiation recode",
-                                          "Chemotherapy recode (yes, no/unk)", "Marital status at diagnosis"],
-                         columns=["Age recode with <1 year olds", "Behavior code ICD-O-3",
-                                  "Breast - Adjusted AJCC 6th T (1988-2015)",
-                                  "Breast - Adjusted AJCC 6th N (1988-2015)",
-                                  "Breast - Adjusted AJCC 6th M (1988-2015)", "CS extension (2004-2015)",
-                                  "CS lymph nodes (2004-2015)", "CS mets at dx (2004-2015)", "Histologic Type ICD-O-3",
-                                  "Laterality", "Breast Subtype (2010+)", "ER Status Recode Breast Cancer (1990+)",
-                                  "PR Status Recode Breast Cancer (1990+)", "Derived HER2 Recode (2010+)",
-                                  "RX Summ--Surg Prim Site (1998+)", "Radiation recode",
-                                  "Chemotherapy recode (yes, no/unk)", "Marital status at diagnosis"])
+import deepsurvk
+df = pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)),"breast.csv"))
 
-training_data,testing_data = Utils.train_test_split(df, test_size=0.2)
+df = Utils.filter_col_data(df, ["Age recode with <1 year olds", "Behavior code ICD-O-3",
+                                "Breast - Adjusted AJCC 6th T (1988-2015)", "Breast - Adjusted AJCC 6th N (1988-2015)",
+                                "Breast - Adjusted AJCC 6th M (1988-2015)", "CS tumor size (2004-2015)",
+                                "CS extension (2004-2015)", "CS lymph nodes (2004-2015)", "CS mets at dx (2004-2015)",
+                                "Histologic Type ICD-O-3", "Laterality", "Breast Subtype (2010+)",
+                                "ER Status Recode Breast Cancer (1990+)", "PR Status Recode Breast Cancer (1990+)",
+                                "Derived HER2 Recode (2010+)", "RX Summ--Surg Prim Site (1998+)", "Radiation recode",
+                                "Chemotherapy recode (yes, no/unk)", "Marital status at diagnosis",
+                                "End Calc Vital Status (Adjusted)", "Number of Intervals (Calculated)"])
+df = pd.get_dummies(df, prefix=["Age recode with <1 year olds", "Behavior code ICD-O-3",
+                                "Breast - Adjusted AJCC 6th T (1988-2015)",
+                                "Breast - Adjusted AJCC 6th N (1988-2015)",
+                                "Breast - Adjusted AJCC 6th M (1988-2015)", "CS extension (2004-2015)",
+                                "CS lymph nodes (2004-2015)", "CS mets at dx (2004-2015)",
+                                "Histologic Type ICD-O-3", "Laterality", "Breast Subtype (2010+)",
+                                "ER Status Recode Breast Cancer (1990+)",
+                                "PR Status Recode Breast Cancer (1990+)", "Derived HER2 Recode (2010+)",
+                                "RX Summ--Surg Prim Site (1998+)", "Radiation recode",
+                                "Chemotherapy recode (yes, no/unk)", "Marital status at diagnosis"],
+                    columns=["Age recode with <1 year olds", "Behavior code ICD-O-3",
+                             "Breast - Adjusted AJCC 6th T (1988-2015)",
+                             "Breast - Adjusted AJCC 6th N (1988-2015)",
+                             "Breast - Adjusted AJCC 6th M (1988-2015)", "CS extension (2004-2015)",
+                             "CS lymph nodes (2004-2015)", "CS mets at dx (2004-2015)", "Histologic Type ICD-O-3",
+                             "Laterality", "Breast Subtype (2010+)", "ER Status Recode Breast Cancer (1990+)",
+                             "PR Status Recode Breast Cancer (1990+)", "Derived HER2 Recode (2010+)",
+                             "RX Summ--Surg Prim Site (1998+)", "Radiation recode",
+                             "Chemotherapy recode (yes, no/unk)", "Marital status at diagnosis"])
+
+training_data, testing_data = Utils.train_test_split(df, test_size=0.2)
 
 print("-----------Training Data-----------")
 print("-----------The row number-----------")
@@ -51,50 +57,44 @@ print(Utils.get_data_frame_col_names(testing_data))
 print("-----------The null value summary-----------")
 print(testing_data.isnull().sum())
 
-
-
-X_train = training_data.drop(["End Calc Vital Status (Adjusted)","Number of Intervals (Calculated)"],axis=1)
+X_train = training_data.drop(["End Calc Vital Status (Adjusted)", "Number of Intervals (Calculated)"], axis=1)
 print("-----------The X_train row number-----------")
 print(Utils.get_data_frame_row_count(X_train))
 print("-----------The X_train col number-----------")
 print(Utils.get_data_frame_col_count(X_train))
 
-
-E_train = Utils.filter_col_data(training_data,["End Calc Vital Status (Adjusted)"])
+E_train = Utils.filter_col_data(training_data, ["End Calc Vital Status (Adjusted)"])
 print("-----------The E_train row number-----------")
 print(Utils.get_data_frame_row_count(E_train))
 print("-----------The E_train col number-----------")
 print(Utils.get_data_frame_col_count(E_train))
-E_train = pd.Series(np.where(E_train.iloc[:, 0].values == "Dead", 1, 0),index=E_train.index).T.to_numpy()
+E_train = pd.Series(np.where(E_train.iloc[:, 0].values == "Dead", 1, 0), index=E_train.index).T.to_numpy()
 
-
-Y_train = Utils.filter_col_data(training_data,["Number of Intervals (Calculated)"])
+Y_train = Utils.filter_col_data(training_data, ["Number of Intervals (Calculated)"])
 print("-----------The Y_train row number-----------")
 print(Utils.get_data_frame_row_count(Y_train))
 print("-----------The Y_train col number-----------")
 print(Utils.get_data_frame_col_count(Y_train))
 
-
-X_test = testing_data.drop(["End Calc Vital Status (Adjusted)","Number of Intervals (Calculated)"],axis=1)
+X_test = testing_data.drop(["End Calc Vital Status (Adjusted)", "Number of Intervals (Calculated)"], axis=1)
 print("-----------The X_train row number-----------")
 print(Utils.get_data_frame_row_count(X_test))
 print("-----------The X_train col number-----------")
 print(Utils.get_data_frame_col_count(X_test))
 
-E_test = Utils.filter_col_data(testing_data,["End Calc Vital Status (Adjusted)"])
+E_test = Utils.filter_col_data(testing_data, ["End Calc Vital Status (Adjusted)"])
 print("-----------The E_train row number-----------")
 print(Utils.get_data_frame_row_count(E_test))
 print("-----------The E_train col number-----------")
 print(Utils.get_data_frame_col_count(E_test))
 
-E_test = pd.Series(np.where(E_test.iloc[:, 0].values == "Dead", 1, 0),index=E_test.index).T.to_numpy()
+E_test = pd.Series(np.where(E_test.iloc[:, 0].values == "Dead", 1, 0), index=E_test.index).T.to_numpy()
 
-Y_test = Utils.filter_col_data(testing_data,["Number of Intervals (Calculated)"])
+Y_test = Utils.filter_col_data(testing_data, ["Number of Intervals (Calculated)"])
 print("-----------The Y_train row number-----------")
 print(Utils.get_data_frame_row_count(Y_test))
 print("-----------The Y_train col number-----------")
 print(Utils.get_data_frame_col_count(Y_test))
-
 
 X_scaler = StandardScaler().fit(X_train)
 X_train = X_scaler.transform(X_train)

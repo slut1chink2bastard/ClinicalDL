@@ -45,5 +45,6 @@ def plot_loss(history):
     plt.plot(history.history['loss'], label='train')
     ax.set_xlabel("No. epochs")
     ax.set_ylabel("Loss [u.a.]")
+    ax.get_figure().show()
 
     return fig, ax
